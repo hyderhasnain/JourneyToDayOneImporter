@@ -14,16 +14,6 @@ from bs4 import BeautifulSoup
 from pytz import timezone as tz, UnknownTimeZoneError
 from tzlocal import get_localzone
 
-## TO DOs:
-# Make text replacements for things like "coffeeshop" -> "coffee shop"
-#  "Yosh" -> "Yash"
-# "Ronnie" -> "Rony"
-# "..." -> Abheer
-#  "Brother" -> "Jafer"
-#  "Sister" -> "Laila"
-#
-# Replace .* in regex patterns with \w when suitable
-
 @dataclass
 class JourneyEntry:
     id: str
@@ -171,10 +161,6 @@ class Importer:
 
         skip = False
         text = self.convert_journey_html_to_dayone_markdown(raw.text)
-        # if text:
-        #     print('\n\nConverted Text:\n\n')
-        #     print(text)
-        #     print('\n\n')
         #text = self.strip_text_from_html_body(raw.text)
         if not text:
             print('WARNING: entry has no text: id={}'.format(raw.id))
@@ -357,12 +343,9 @@ class Importer:
         # Fix spelling and capitalization of names. If a name is already spelled right and is in all caps, then it is not affected
 
         names_to_fix = {
-            'Yash': ['Yosh'],
-            'Rony': ['Ronnie', 'Ronny'],
-            'Raza': ['Reza'],
-            'Laila': ['Lala'],
-            'Sanya': ['Sonia'],
-            'Nikhil': [None]
+            'Name One': ['Nome One'],
+            'Name Two': ['Nome Two', 'Neme Two'],
+            'Name Three': [None]
         } # Format: Key = A correct case name spelling to use, for fixing both mispelled and uncapitalized names. Value = List (!!!) of possible uppercased mispellings of name to fix. If no mispellings for a given name, use value of None
 
         for correct_name, mispellings in names_to_fix.items():
