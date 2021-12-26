@@ -1,5 +1,12 @@
 # Journey to Day One Importer
 
+**NOTE: This fork is based on the original developed by user camflint. My updated code is in file j2d_hyder.py. My updated code allows all formatting in the original Journey file, which is stored as HTML, to be converted correctly to the Markdown formatting used by Day One. In my testing, the original code stripped out this formatting.**
+
+**The following are the contents of camflint's original README. In order to run the code in this fork, use j2d_hyder.py instead of j2d.py**
+
+---
+
+
 > **NOTICE**: I am not affiliated with the companies behind these applications. I created this script for my own use. Use at your own discretion.
 
 A command-line tool to migrate your Journey entries to Day One.
