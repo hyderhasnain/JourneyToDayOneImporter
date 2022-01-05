@@ -187,13 +187,11 @@ class Importer:
         ## Perform text replacements of HTML elements in journey data with markdown elements needed for day one to interpret. Use regex for this.
         # HTML tables will not be replaced due to complexity and laziness
 
-
         text = self.convert_simple(text)
         text = self.convert_lists(text)
         text = self.perform_phrase_replacements(text)
         text = self.fix_name_spellings(text)
         text = self.convert_quote_blocks(text)
-
 
         # Replace horizontal lines
         text = re.sub(r'<hr( dir.*?){0,1}>', r'\n---', text)
@@ -212,8 +210,6 @@ class Importer:
         to_replace_simple = (r'<(em|i)>(?P<content>.*?)(?P<nbsp>&nbsp;)*<\\*/+(em|i)>', r'<(strong|b)>(?P<content>.*?)(?P<nbsp>&nbsp;)*<\\*/+(strong|b)>', r'<(del)>(?P<content>.*?)(?P<nbsp>&nbsp;)*<\\*/+(del)>', r'(<span.*?style.*?underline.*?>)(?P<text>.*?\w.*?)(<\\{0,1}/{1}span>)', r'<h1>', r'<h2>', r'<h3>', r'&nbsp;')
         replace_with_simple = (r'*\g<content>*\g<nbsp>', r'**\g<content>**\g<nbsp>', r'~~\g<content>~~\g<nbsp>' , r'*\g<text>*', r'\n# ', r'\n## ', r'\n##### ', r' ')
         to_remove_simple = (r'<p\s.*?>', r'<(\\{0,1}/{1}){0,1}p>', r'<(\\{0,1}/{1}){0,1}h\d+>', r'<(\\{0,1}/{1}){0,1}del>', r'<(\\{0,1}/{1}){0,1}span\s{0,1}.*?>')
-
-
 
         for pair in zip(to_replace_simple, replace_with_simple): # Replace HTML elements with markdown elements
                 text=re.sub(pair[0], pair[1], text)
@@ -318,15 +314,6 @@ class Importer:
 
         return text
 
-    def strip_text_from_html_body(self, original_text):
-
-        soup = BeautifulSoup(original_text, 'html5lib')
-        is_html = bool(soup.find())  # true if at least one HTML element can be found
-        if is_html:
-            return soup.get_text(strip=True)
-        else:
-            return original_text
-
     def perform_phrase_replacements(self, text):
         # Replace certain phrases/words with different phrases/words
 
@@ -363,6 +350,15 @@ class Importer:
 
         return text
 
+    def strip_text_from_html_body(self, original_text):
+
+        soup = BeautifulSoup(original_text, 'html5lib')
+        is_html = bool(soup.find())  # true if at least one HTML element can be found
+        if is_html:
+            return soup.get_text(strip=True)
+        else:
+            return original_text
+    
     def import_entries(self, entries: Iterable[ValidatedEntry]):
         flat_entries = list(entries)
         self.data.total_count = len(flat_entries)
